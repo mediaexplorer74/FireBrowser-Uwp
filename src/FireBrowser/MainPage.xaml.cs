@@ -204,7 +204,8 @@ namespace FireBrowser
 
         private async void MoveTabToNewWindow(TabViewItem tab)
         {
-            if (!ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 10))
+            if (!ApiInformation.IsApiContractPresent(
+                "Windows.Foundation.UniversalApiContract", 10))
             {
                 return;
             }
@@ -226,7 +227,8 @@ namespace FireBrowser
             await newWindow.TryShowAsync();
         }
 
-        private async void Tabs_TabItemsChanged(TabView sender, Windows.Foundation.Collections.IVectorChangedEventArgs args)
+        private async void Tabs_TabItemsChanged(TabView sender, 
+            Windows.Foundation.Collections.IVectorChangedEventArgs args)
         {
             // If there are no more tabs, close the window.
             if (sender.TabItems.Count == 0)
@@ -475,15 +477,23 @@ namespace FireBrowser
             {
                 get
                 {
-                    if (_userName == "DefaultFireBrowserUser") return "DefaultFireBrowserUserName";
-                    else return _userName;
+                    if (_userName == "DefaultFireBrowserUser")
+                        return "DefaultFireBrowserUserName";
+                    else
+                    {
+                        return _userName;
+                    }
                 }
-                set { SetProperty(ref _userName, value); }
+                set 
+                { 
+                    SetProperty(ref _userName, value); 
+                }
             }
         }
 
         #endregion
-        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        private void CoreTitleBar_LayoutMetricsChanged(
+            CoreApplicationViewTitleBar sender, object args)
         {
             if (FlowDirection == FlowDirection.LeftToRight)
             {
@@ -565,7 +575,8 @@ namespace FireBrowser
         #endregion
 
 
-        public FireBrowserTabViewItem CreateNewIncog(Type page = null, object param = null, int index = -1)
+        public FireBrowserTabViewItem CreateNewIncog(Type page = null, 
+            object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
 
@@ -575,7 +586,10 @@ namespace FireBrowser
             FireBrowserTabViewItem newItem = new()
             {
                 Header = $"Incognito",
-                IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact }
+                IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource()
+                { 
+                    Symbol = Symbol.BlockContact 
+                }
             };
 
             Passer passer = new()
@@ -612,8 +626,10 @@ namespace FireBrowser
         }
 
 
-        public FireBrowserTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
+        public FireBrowserTabViewItem CreateNewTab(Type page = null, 
+            object param = null, int index = -1)
         {
+            //return;
             if (index == -1) index = Tabs.TabItems.Count;
 
 
@@ -622,7 +638,10 @@ namespace FireBrowser
             FireBrowserTabViewItem newItem = new()
             {
                 Header = $"FireBrowser HomePage",
-                IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home }
+                IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() 
+                { 
+                    Symbol = Symbol.Home 
+                }
             };
 
 

@@ -19,6 +19,7 @@ using Windows.Media.SpeechSynthesis;
 using Microsoft.Toolkit.Uwp.Connectivity;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.Notifications;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -39,15 +40,42 @@ namespace FireBrowser.Pages
         }
         public void LoadSettings()
         {
-            string GetSetting(string settingName) => FireBrowserInterop.SettingsHelper.GetSetting(settingName);
+            string GetSetting(string settingName)
+            {
+                string s = " ";
+                try
+                {
+                    s = FireBrowserInterop.SettingsHelper.GetSetting(settingName);
 
-            WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = GetSetting("BrowserScripts").Equals("1", StringComparison.OrdinalIgnoreCase);
-            WebViewElement.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = GetSetting("BrowserKeys").Equals("1", StringComparison.OrdinalIgnoreCase);
-            WebViewElement.CoreWebView2.Settings.IsStatusBarEnabled = GetSetting("StatusBar").Equals("1", StringComparison.OrdinalIgnoreCase);
-            WebViewElement.CoreWebView2.Settings.IsScriptEnabled = !bool.Parse(GetSetting("DisableJavaScript"));
-            WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = !bool.Parse(GetSetting("DisablePassSave"));
-            WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = !bool.Parse(GetSetting("DisableWebMess"));
-            WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = !bool.Parse(GetSetting("DisableGenAutoFill"));
+                    if (s == null)
+                    {
+                        s = " ";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("[ex] GetSetting error: " + ex.Message);
+
+                    s = " ";
+                }
+
+                return s;
+            }
+
+            WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = GetSetting("BrowserScripts") == "1";//.Equals("1", StringComparison.OrdinalIgnoreCase);
+
+            WebViewElement.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = GetSetting("BrowserKeys") == "1";//.Equals("1", StringComparison.OrdinalIgnoreCase);
+
+            WebViewElement.CoreWebView2.Settings.IsStatusBarEnabled = GetSetting("StatusBar") == "1";//.Equals("1", StringComparison.OrdinalIgnoreCase);
+
+            //RnD
+            WebViewElement.CoreWebView2.Settings.IsScriptEnabled = true;//!bool.Parse(GetSetting("DisableJavaScript"));
+
+            WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;//!bool.Parse(GetSetting("DisablePassSave"));
+
+            WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = true;//!bool.Parse(GetSetting("DisableWebMess"));
+
+            WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;//!bool.Parse(GetSetting("DisableGenAutoFill"));
         }
 
 
@@ -159,7 +187,20 @@ namespace FireBrowser.Pages
                     if (IsIncognitoModeEnabled == true)
                     {
                         userAgent = userAgent.Substring(25, edgIndex - 25);
-                        userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
+
+                        if (userAgent == null)
+                        {
+                            userAgent = "";
+                        }
+
+                        try
+                        {
+                            userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("[ex] userAgent.Replace error: " + ex.Message);
+                        }
                     }
                     else
                     {
@@ -169,7 +210,21 @@ namespace FireBrowser.Pages
                             if (edgIndex >= 0)
                             {
                                 userAgent = userAgent.Substring(0, edgIndex - 0);
-                                userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
+
+                                if (userAgent == null)
+                                {
+                                    userAgent = "";
+                                }
+
+                                try
+                                {
+                                    userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.WriteLine("[ex] userAgent.Replace error: " + ex.Message);
+                                }
+
                                 s.CoreWebView2.Settings.UserAgent = userAgent;
                             }
                         }

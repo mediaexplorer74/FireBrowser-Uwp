@@ -138,57 +138,68 @@ namespace FireBrowser.Pages.SettingsPages
         #endregion
         private void Read_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", Read.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("Readbutton",
+                Read.IsOn ? "True" : "0");
         }
 
         private void Adbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", Adbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", 
+                Adbl.IsOn ? "True" : "0");
         }
 
         private void Dwbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", Dwbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("DwBtn",
+                Dwbl.IsOn ? "True" : "0");
         }
 
         private void Trbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", Trbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("TransBtn",
+                Trbl.IsOn ? "True" : "0");
         }
 
         private void Frbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", Frbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", 
+                Frbl.IsOn ? "True" : "0");
         }
 
         private void Hsbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", Hsbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("HisBtn",
+                Hsbl.IsOn ? "True" : "0");
         }
 
         private void Qrbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", Qrbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", 
+                Qrbl.IsOn ? "True" : "0");
         }
 
         private void FlAd_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("FlBtn", FlAd.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("FlBtn",
+                FlAd.IsOn ? "True" : "0");
         }
 
         private void Tlbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("ToolBtn", Tlbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("ToolBtn",
+                Tlbl.IsOn ? "True" : "0");
         }
 
         private void Drbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("DarkBtn", Drbl.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("DarkBtn", 
+                Drbl.IsOn ? "True" : "0");
         }
 
         private void OpenNew_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", OpenNew.IsOn ? "True" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", 
+                OpenNew.IsOn ? "True" : "0");
         }
     }
 }

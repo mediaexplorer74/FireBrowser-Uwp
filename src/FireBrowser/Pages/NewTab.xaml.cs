@@ -2,6 +2,7 @@
 using FireBrowserCore.Models;
 using FireBrowserCore.ViewModel;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using Windows.ApplicationModel.Resources;
@@ -21,7 +22,18 @@ namespace FireBrowser.Pages
 
         bool isAuto;
         bool isMode;
-        public HomeViewModel ViewModel { get; set; }
+        public HomeViewModel ViewModel
+        {
+            get
+            {
+                return viewModel;
+            }
+
+            set
+            {
+                viewModel = value;
+            }
+        }
         public NewTab()
         {
             this.InitializeComponent();
@@ -36,8 +48,8 @@ namespace FireBrowser.Pages
             isMode = FireBrowserInterop.SettingsHelper.GetSetting("LightMode") == "1";
             Mode.IsOn = isMode;
 
-            var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
-            var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
+            string set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
+            string cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
 
             // ViewModel setup
             ViewModel = new HomeViewModel
@@ -54,6 +66,10 @@ namespace FireBrowser.Pages
 
             GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
 
+            //RnD 
+            if (cls == null)
+                cls = "green";
+
             NewColor.Text = cls;
 
             // Visibility setup based on LightMode setting
@@ -69,6 +85,8 @@ namespace FireBrowser.Pages
         }
 
         Passer param;
+        private HomeViewModel viewModel;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -98,7 +116,9 @@ namespace FireBrowser.Pages
                     }
                     else
                     {
-                        var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
+                        Windows.UI.Color color = 
+                            (Windows.UI.Color)XamlBindingHelper.ConvertValue(
+                            typeof(Windows.UI.Color), colorString);
 
                         return new SolidColorBrush(color);
                     }
@@ -108,10 +128,12 @@ namespace FireBrowser.Pages
                     var client = new HttpClient();
                     try
                     {
-                        var request = client.GetStringAsync(new Uri("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")).Result;
+                        string request = 
+                            client.GetStringAsync(new Uri(
+                                "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")).Result;
                         try
                         {
-                            var images = JsonSerializer.Deserialize<ImageRoot>(request);
+                            ImageRoot images = JsonSerializer.Deserialize<ImageRoot>(request);
 
 
                             BitmapImage btpImg = new()
@@ -126,7 +148,10 @@ namespace FireBrowser.Pages
                         }
                         catch (Exception ex)
                         {
-                            return null;
+                            Debug.WriteLine("[ex] " + ex.Message);
+                            //RnD
+                            //return null;
+                            return new SolidColorBrush(Colors.Transparent);
                         }
                     }
                     catch
@@ -140,7 +165,7 @@ namespace FireBrowser.Pages
 
         private void BackgroundGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = (sender as GridView).SelectedItem as GridViewItem;
+            GridViewItem selection = (sender as GridView).SelectedItem as GridViewItem;
 
             switch (selection.Tag)
             {
@@ -160,6 +185,10 @@ namespace FireBrowser.Pages
                     NewColor.IsEnabled = true;
                     break;
                 default:
+                    //RnD
+                    FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
+                    ViewModel.BackgroundType = Settings.NewTabBackground.Costum;
+                    NewColor.IsEnabled = true;
 
                     break;
             }
